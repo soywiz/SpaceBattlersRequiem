@@ -3,7 +3,9 @@ package entities.enemies
 import com.soywiz.korge.view.Sprite
 import com.soywiz.korge.view.xy
 import com.soywiz.korim.bitmap.Bitmap
+import com.soywiz.korio.async.*
 import com.soywiz.korma.geom.*
+import gameCoroutineContext
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -18,7 +20,7 @@ class DemoPlayer (bm: Bitmap) : Sprite(bm) {
         scale = 3.0
         xy(400,400)
         val timeStep = 15.0
-        GlobalScope.launch {
+        launchImmediately(gameCoroutineContext) {
             while (true)
             {
                 updatePosition(timeStep)

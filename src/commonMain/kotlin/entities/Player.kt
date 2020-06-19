@@ -9,11 +9,12 @@ import com.soywiz.korge.time.delay
 import com.soywiz.korge.view.*
 import com.soywiz.korim.bitmap.Bitmap
 import com.soywiz.korim.format.readBitmap
+import com.soywiz.korio.async.*
 import com.soywiz.korio.file.std.resourcesVfs
 import com.soywiz.korma.geom.*
 import entities.projectiles.PlayerBullet
+import gameCoroutineContext
 import input.PlayerInput
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import org.jbox2d.common.Vec2
 import kotlin.math.atan2
@@ -38,7 +39,7 @@ class Player(bm: Bitmap, views: Views, private var reloadTime: TimeSpan = 100.mi
         center()
         shoot()
 
-        GlobalScope.launch {
+        launchImmediately(gameCoroutineContext) {
             damageSound = resourcesVfs["sound/playerDamage(sfx_exp_short_hard_2).wav"].readSound()
             damageSound?.volume = 0.25
         }
@@ -76,7 +77,7 @@ class Player(bm: Bitmap, views: Views, private var reloadTime: TimeSpan = 100.mi
     }
 
     private fun shoot() {
-        GlobalScope.launch {
+        launchImmediately(gameCoroutineContext) {
             while(true) {
                 delay(165.milliseconds)
                 if (playerInput.pressingAttack()) {

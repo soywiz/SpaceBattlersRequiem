@@ -3,7 +3,7 @@ package entities
 import com.soywiz.klock.milliseconds
 import com.soywiz.korge.view.*
 import com.soywiz.korim.format.readBitmap
-import com.soywiz.korio.async.launch
+import com.soywiz.korio.async.*
 import com.soywiz.korio.file.std.resourcesVfs
 import com.soywiz.korma.geom.Angle
 import com.soywiz.korma.geom.radians
@@ -11,7 +11,7 @@ import entities.enemies.Asteroid
 import entities.enemies.Missile
 import entities.enemies.RangedEnemy
 import entities.enemies.TrackingEnemy
-import kotlinx.coroutines.GlobalScope
+import gameCoroutineContext
 import kotlinx.coroutines.delay
 import math.Tracking
 import org.jbox2d.common.Vec2
@@ -22,7 +22,7 @@ object SpawningManager {
 
 
      fun spawnTrackingEnemy(x :Double, y :Double, view: Views, player :Player, parent: Container?){
-         GlobalScope.launch {
+         launchImmediately(gameCoroutineContext) {
              val testingSpriteAnimation = SpriteAnimation(
                      spriteMap = resourcesVfs["enemies\\tracker ship.png"].readBitmap(),
                      spriteWidth = 48,
@@ -42,7 +42,7 @@ object SpawningManager {
     }
 
      fun spawnRangedEnemy(x :Double, y :Double, view: Views, player: Player, parent: Container?){
-         GlobalScope.launch {
+         launchImmediately(gameCoroutineContext) {
              val enemyBitmap = resourcesVfs["enemies/otherRanged.png"].readBitmap()
              val enemy = RangedEnemy(SpriteAnimation(enemyBitmap, spriteWidth = 62, spriteHeight = 62), view, player)
              enemy.xy(x, y)
@@ -59,7 +59,7 @@ object SpawningManager {
      }
 
     fun spawnMissile(x :Double, y :Double, view: Views, player :Player, parent: Container?) {
-        GlobalScope.launch {
+        launchImmediately(gameCoroutineContext) {
             val enemyBitmap = resourcesVfs["animations/projectiles/rocket.png"].readBitmap()
             val enemy = Missile(SpriteAnimation(enemyBitmap), view, player)
             enemy.xy(x, y)
@@ -77,7 +77,7 @@ object SpawningManager {
     }
 
      fun spawnExplosion(x:Double, y: Double, angle: Angle, parent: Container?, size: Double) {
-         GlobalScope.launch {
+         launchImmediately(gameCoroutineContext) {
              val bitmap = resourcesVfs["animations/explosions/explosion-6.png"].readBitmap()
 
              val sprite = Sprite(SpriteAnimation(
@@ -100,7 +100,7 @@ object SpawningManager {
      }
 
     fun spawnAsteroid(x:Double, y:Double, views: Views, player: Player, parent: Container?, size: Int) {
-        GlobalScope.launch {
+        launchImmediately(gameCoroutineContext) {
             val testingSpriteAnimation = SpriteAnimation(
                     spriteMap = resourcesVfs["enemies/Asteroid.png"].readBitmap(),
                     spriteWidth = 48,
@@ -120,7 +120,7 @@ object SpawningManager {
     }
 
      fun spawnXP(x: Double, y: Double, player:Player, parent: Container?)  {
-         GlobalScope.launch {
+         launchImmediately(gameCoroutineContext) {
              val randedEnemyBitmap = resourcesVfs["animations/projectiles/exp.png"].readBitmap()
              val exp = ExperiencePoint(randedEnemyBitmap, player)
              exp.xy(x, y)

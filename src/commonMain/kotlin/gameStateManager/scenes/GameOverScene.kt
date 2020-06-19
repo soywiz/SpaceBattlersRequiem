@@ -7,10 +7,10 @@ import com.soywiz.korge.time.delay
 import com.soywiz.korge.view.*
 import com.soywiz.korim.font.readBitmapFont
 import com.soywiz.korim.format.readBitmap
+import com.soywiz.korio.async.*
 import com.soywiz.korio.file.std.resourcesVfs
+import gameCoroutineContext
 import gameStateManager.GameDependency
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import kotlin.random.Random
 
 class GameOverScene : Scene() {
@@ -20,7 +20,7 @@ class GameOverScene : Scene() {
         val font1 = resourcesVfs["font/font1.fnt"].readBitmapFont()
         val message = text("", 32.0, font = font1)
 
-        GlobalScope.launch {
+        launchImmediately(gameCoroutineContext) {
             for (item in text) {
                 message.text += item
                 delay(100.milliseconds)

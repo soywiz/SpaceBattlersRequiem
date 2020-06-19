@@ -10,14 +10,14 @@ import com.soywiz.korim.font.readBitmapFont
 import com.soywiz.korim.format.readBitmap
 import com.soywiz.korio.async.launchImmediately
 import com.soywiz.korio.file.std.resourcesVfs
+import gameCoroutineContext
 import gameStateManager.GameDependency
-import kotlinx.coroutines.GlobalScope
 import kotlin.random.Random
 
 class HelpScene : Scene() {
     @KorgeUntested
     override suspend fun Container.sceneInit() {
-        launchImmediately {
+        launchImmediately(gameCoroutineContext) {
 
         }
         addUpdater {
@@ -27,7 +27,7 @@ class HelpScene : Scene() {
             }
 
             if (views.input.keys[Key.ESCAPE]) {
-                GlobalScope.launchImmediately {
+                launchImmediately(gameCoroutineContext) {
                     sceneDestroy()
                     sceneContainer.changeTo<MainMenuScene>(GameDependency("MainMenu"))
                 }

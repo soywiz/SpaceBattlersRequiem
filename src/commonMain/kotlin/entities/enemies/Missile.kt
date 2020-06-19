@@ -5,11 +5,12 @@ import com.soywiz.korau.sound.readSound
 import com.soywiz.korge.view.SpriteAnimation
 import com.soywiz.korge.view.Views
 import com.soywiz.korge.view.xy
+import com.soywiz.korio.async.*
 import com.soywiz.korio.file.std.resourcesVfs
 import com.soywiz.korma.geom.*
 import entities.Player
 import entities.SpawningManager
-import kotlinx.coroutines.GlobalScope
+import gameCoroutineContext
 import kotlinx.coroutines.launch
 import math.Tracking
 import org.jbox2d.common.Vec2
@@ -20,7 +21,7 @@ class Missile(bm: SpriteAnimation, views: Views, player: Player) : Enemy(bm, vie
     private var explodeSound: NativeSound? = null
 
     init {
-        GlobalScope.launch {
+        launchImmediately(gameCoroutineContext) {
             explodeSound = resourcesVfs["sound/asteroid(sfx_exp_short_hard6).wav"].readSound()
             explodeSound?.volume = 0.25
         }

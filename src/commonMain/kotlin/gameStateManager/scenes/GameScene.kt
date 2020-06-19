@@ -13,8 +13,8 @@ import com.soywiz.korio.file.std.resourcesVfs
 import com.soywiz.korma.geom.*
 import entities.Player
 import entities.SpawningManager
+import gameCoroutineContext
 import gameStateManager.GameDependency
-import kotlinx.coroutines.GlobalScope
 import org.jbox2d.common.Vec2
 import kotlin.random.Random
 
@@ -26,7 +26,7 @@ class GameScene(private val myDependency: GameDependency) : Scene() {
         text("Test Game: ${myDependency.value}")
         fun playerDead()
         {
-            GlobalScope.launchImmediately {
+            launchImmediately(gameCoroutineContext) {
                 delay(3.seconds)
 //                println("Switching to game")
                 sceneDestroy()
@@ -105,21 +105,21 @@ class GameScene(private val myDependency: GameDependency) : Scene() {
         val minSpawningRange = 800
         val maxSpawningRange = 1200
 
-        launchImmediately {
+        launchImmediately(gameCoroutineContext) {
             while (true) {
                 val spawnPos = Point(player.x + cos(timeMS.radians) * Random.nextInt(minSpawningRange, maxSpawningRange), player.y + sin(timeMS.radians) * Random.nextInt(minSpawningRange, maxSpawningRange))
                 SpawningManager.spawnRangedEnemy(spawnPos.x, spawnPos.y, views, player, this)
                 delay(Random.nextInt(8, 12).seconds)
             }
         }
-        launchImmediately {
+        launchImmediately(gameCoroutineContext) {
             while (true) {
                 val spawnPos = Point(player.x + cos(timeMS.radians) * Random.nextInt(minSpawningRange, maxSpawningRange), player.y + sin(timeMS.radians) * Random.nextInt(minSpawningRange, maxSpawningRange))
                 SpawningManager.spawnTrackingEnemy(spawnPos.x, spawnPos.y, views, player, this)
                 delay(Random.nextInt(3, 8).seconds)
             }
         }
-        launchImmediately {
+        launchImmediately(gameCoroutineContext) {
             while (true) {
                 val spawnPos = Point(player.x + cos(timeMS.radians) * Random.nextInt(minSpawningRange, maxSpawningRange), player.y + sin(timeMS.radians) * Random.nextInt(minSpawningRange, maxSpawningRange))
                 SpawningManager.spawnAsteroid(spawnPos.x, spawnPos.y, views, player, this, Random.nextInt(1, 4))
@@ -130,7 +130,7 @@ class GameScene(private val myDependency: GameDependency) : Scene() {
     }
 
     fun switchScene() {
-        GlobalScope.launchImmediately {
+        launchImmediately(gameCoroutineContext) {
             sceneDestroy()
             sceneContainer.changeTo<MainMenuScene>(GameDependency("MainMenu"))
         }

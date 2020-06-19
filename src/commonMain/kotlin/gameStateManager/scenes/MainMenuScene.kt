@@ -13,6 +13,7 @@ import com.soywiz.korma.geom.degrees
 import com.soywiz.korma.geom.plus
 import com.soywiz.korma.geom.sin
 import entities.enemies.DemoPlayer
+import gameCoroutineContext
 import gameStateManager.GameDependency
 import kotlin.random.Random
 
@@ -26,7 +27,7 @@ class MainMenuScene(private val myDependency: GameDependency) : Scene() {
 
         addChild(DemoPlayer(resourcesVfs["character/pitrizzo-SpaceShip-gpl3-opengameart-96x96.png"].readBitmap()))
 
-        launchImmediately {
+        launchImmediately(gameCoroutineContext) {
             /*     unused blurring effect
             while (blur>0) {
                 filter = BlurFilter(blur)
@@ -47,8 +48,9 @@ class MainMenuScene(private val myDependency: GameDependency) : Scene() {
         val buttonOffset = -50
 
         val startButtonBitmap = resourcesVfs["buttons/BigStartButton.png"].readBitmap()
+
         val startButton = sprite(startButtonBitmap).position(containerRoot.width / 3 * 2 + 150, containerRoot.height / 2 + buttonOffset).center().onClick {
-            launchImmediately {
+            launchImmediately(gameCoroutineContext) {
 //                println("Switching to game")
                 sceneDestroy()
                 sceneContainer.changeTo<GameScene>(GameDependency("Game"))
@@ -59,7 +61,7 @@ class MainMenuScene(private val myDependency: GameDependency) : Scene() {
 
         val manualButtonBitmap = resourcesVfs["buttons/BigManualButton.png"].readBitmap()
         val manualButton = sprite(manualButtonBitmap).position(containerRoot.width / 3 * 2 + 150, containerRoot.height / 2 + 150 + buttonOffset).center().onClick {
-            launchImmediately {
+            launchImmediately(gameCoroutineContext) {
 //                println("Switching to manual")
                 sceneDestroy()
                 sceneContainer.changeTo<HelpScene>(GameDependency("Manual"))
@@ -69,7 +71,7 @@ class MainMenuScene(private val myDependency: GameDependency) : Scene() {
 
         val exitButtonBitmap = resourcesVfs["buttons/BigExitButton.png"].readBitmap()
         val exitButton = sprite(exitButtonBitmap).position(containerRoot.width / 3 * 2 + 150, containerRoot.height / 2 + 300 + buttonOffset).center().onClick {
-            launchImmediately {
+            launchImmediately(gameCoroutineContext) {
                 sceneDestroy()
                views.gameWindow.exit()
             }

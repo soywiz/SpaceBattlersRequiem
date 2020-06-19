@@ -5,7 +5,7 @@ import com.soywiz.korge.internal.KorgeUntested
 import com.soywiz.korge.view.*
 import com.soywiz.korim.bitmap.Bitmap
 import com.soywiz.korio.async.launchImmediately
-import kotlinx.coroutines.GlobalScope
+import gameCoroutineContext
 import org.jbox2d.common.Vec2
 import kotlin.random.Random
 
@@ -69,7 +69,7 @@ class BackgroundHandler(private val bm : Bitmap, private val spriteSize : Int =6
         {
 //            println(animations.size)
             if(animations.size>maxBackgroundTiles) {
-                GlobalScope.launchImmediately {
+                launchImmediately(gameCoroutineContext) {
                     while (animations.size > maxBackgroundTiles / 2) {
                         currentScene.removeChild(animations.removeAt(0))
                     }

@@ -4,8 +4,9 @@ import com.soywiz.korau.sound.NativeSound
 import com.soywiz.korau.sound.readSound
 import com.soywiz.korge.view.*
 import com.soywiz.korim.bitmap.Bitmap
+import com.soywiz.korio.async.*
 import com.soywiz.korio.file.std.resourcesVfs
-import kotlinx.coroutines.GlobalScope
+import gameCoroutineContext
 import kotlinx.coroutines.launch
 import org.jbox2d.common.Vec2
 import kotlin.math.abs
@@ -19,7 +20,7 @@ class ExperiencePoint(bm: Bitmap, player: Player) : Sprite(bm) {
         scale = 0.25
         center()
 
-        GlobalScope.launch {
+        launchImmediately(gameCoroutineContext) {
             xpSound = resourcesVfs["sound/experience(sfx_coin_single_4).wav"].readSound()
             xpSound?.volume = 0.25
         }

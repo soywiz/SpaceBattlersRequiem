@@ -5,13 +5,14 @@ import com.soywiz.korau.sound.readSound
 import com.soywiz.korge.view.SpriteAnimation
 import com.soywiz.korge.view.Views
 import com.soywiz.korge.view.xy
+import com.soywiz.korio.async.*
 import com.soywiz.korio.file.std.resourcesVfs
 import com.soywiz.korma.geom.degrees
 import com.soywiz.korma.geom.plus
 import com.soywiz.korma.geom.times
 import entities.Player
 import entities.SpawningManager
-import kotlinx.coroutines.GlobalScope
+import gameCoroutineContext
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 
@@ -23,7 +24,7 @@ class Asteroid(val bm: SpriteAnimation, views: Views, player: Player, private va
         velocity.x = Random.nextInt(-200, 200).toFloat()
         velocity.y = Random.nextInt(-200, 200).toFloat()
 
-        GlobalScope.launch {
+        launchImmediately(gameCoroutineContext) {
             explodeSound = resourcesVfs["sound/asteroid(sfx_exp_short_hard6).wav"].readSound()
             explodeSound?.volume = 0.25
         }
